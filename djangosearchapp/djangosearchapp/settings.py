@@ -19,11 +19,20 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
+# database
+search_db_host = os.environ.get('SEARCH_DB_HOST') if os.environ.get('SEARCH_DB_HOST') else 'localhost'
+search_db_password = os.environ.get('SEARCH_DB_PASSWORD') if os.environ.get('SEARCH_DB_PASSWORD') else 'password'
+search_db = os.environ.get('SEARCH_DB') if os.environ.get('SEARCH_DB') else 'search_db'
+search_db_port = os.environ.get('SEARCH_DB_PORT') if os.environ.get('SEARCH_DB_PORT') else '5432'
+search_db_user = os.environ.get('SEARCH_DB_USER') if os.environ.get('SEARCH_DB_USER') else 'search_user'
+search_app_venv = os.environ.get('SEARCH_APP_VENV') if os.environ.get('SEARCH_APP_VENV') else 'django_search_app_environment'
+debug = os.environ.get('DEBUG') if os.environ.get('DEBUG') else False
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'q%*2k367_nr75=2k34b^uv&y3a=^m4@(6@t7l9$(vserdt-b7!'
+SECRET_KEY = 'q%*2k367_nr75=2k34b^uv&y3a=^m4@(6@t7l9$(vserdt-b7! SECRET_KEY'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = debug
 
 ALLOWED_HOSTS = []
 
@@ -75,8 +84,12 @@ WSGI_APPLICATION = 'djangosearchapp.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': search_db,
+        'USER': search_db_user,
+        'PASSWORD': search_db_password,
+        'HOST': search_db_host,
+        'PORT': search_db_port
     }
 }
 
@@ -105,7 +118,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Nairobi'
 
 USE_I18N = True
 
