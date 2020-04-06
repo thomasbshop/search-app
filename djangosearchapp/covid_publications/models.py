@@ -4,6 +4,7 @@ from django.db import models
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 
 class YearManager(models.Manager):
@@ -41,3 +42,11 @@ class Post(models.Model):
 
 	objects = models.Manager() # The default manager.
 	published = YearManager() # Our custom manager.
+
+	def get_absolute_url(self):
+		return reverse('covid_publications:post_detail',
+			args=[
+			self.publish.year, # title
+			self.publish.month, #authors
+			self.publish.day, #reference
+			self.slug])

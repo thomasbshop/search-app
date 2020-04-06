@@ -18,4 +18,5 @@ from django.urls import path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('covid_publications/', include('covid_publications.urls', namespace='covid_publications')),
 ]
