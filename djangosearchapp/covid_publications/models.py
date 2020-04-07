@@ -7,32 +7,32 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 
 
-class YearManager(models.Manager):
+class ReferenceManager(models.Manager):
 	def get_queryset(self):
-		return super(YearManager,
-			self).get_queryset().filter(published_year='2020')
+		return super(ReferenceManager,
+			self).get_queryset().filter(abstract__isnull=False)
 
 
 class Post(models.Model):
 	
-	title = models.TextField(max_length=500)
-	slug = models.SlugField(max_length=250,	unique_for_date='reference')
-	authors = models.ForeignKey(User, on_delete=models.CASCADE, related_name='publication_posts')
-	abstract = models.TextField()
-	published_year = models.CharField(max_length=250)
-	published_month = models.CharField(max_length=250)
-	journal = models.CharField(max_length=500)
-	volume = models.CharField(max_length=250)
-	issue = models.CharField(max_length=250)
-	published_date = models.DateTimeField(default=timezone.now)
-	pages = models.CharField(max_length=250)
-	accession_number = models.CharField(max_length=250)
-	doi = models.CharField(max_length=250)
-	reference = models.CharField(max_length=250)
-	covidence_harsh = models.CharField(max_length=500)
-	study = models.CharField(max_length=500)
-	tags = models.TextField()
-	notes = models.TextField()
+	title = models.TextField(max_length=500, null=True, blank=True)
+	slug = models.SlugField(max_length=500,	unique_for_date='reference', null=True, blank=True)
+	authors = models.ForeignKey(User, on_delete=models.CASCADE, related_name='publication_posts', null=True, blank=True)
+	abstract = models.TextField(null=True, blank=True)
+	published_year = models.CharField(max_length=500, null=True, blank=True)
+	published_month = models.CharField(max_length=500, null=True, blank=True)
+	journal = models.CharField(max_length=500, null=True, blank=True)
+	volume = models.CharField(max_length=500, null=True, blank=True)
+	issue = models.CharField(max_length=500, null=True, blank=True)
+	published_date = models.DateTimeField(default=timezone.now, null=True, blank=True)
+	pages = models.CharField(max_length=500, null=True, blank=True)
+	accession_number = models.CharField(max_length=500, null=True, blank=True)
+	doi = models.CharField(max_length=500, null=True, blank=True)
+	reference = models.CharField(max_length=500, null=True, blank=True)
+	covidence_harsh = models.CharField(max_length=500, null=True, blank=True)
+	study = models.CharField(max_length=500, null=True, blank=True)
+	tags = models.TextField(null=True, blank=True)
+	notes = models.TextField(null=True, blank=True)
 
 	class Meta:
 		ordering = ('-reference',)
@@ -41,12 +41,10 @@ class Post(models.Model):
 		return self.study
 
 	objects = models.Manager() # The default manager.
-	published = YearManager() # Our custom manager.
+	has_abstract = ReferenceManager() # Our custom manager.
 
 	def get_absolute_url(self):
 		return reverse('covid_publications:post_detail',
 			args=[
-			self.publish.year, # title
-			self.publish.month, #authors
-			self.publish.day, #reference
-			self.slug])
+				self.study,
+				self.slug])
