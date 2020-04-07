@@ -1,0 +1,18 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{% block title %}{% endblock %}</title>
+	<link href="{% static "css/covid_publications.css" %}" rel="stylesheet">
+</head>
+<body>
+	<div id="content">
+		{% block content %}
+		{% endblock %}
+	</div>
+	<div id="sidebar">
+		<h2>Publication</h2>
+		<p>This is a Covid-19 publication.</p>
+	</div>
+</body>
+</html>

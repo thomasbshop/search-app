@@ -1,0 +1,17 @@
+{% extends "covid/base.html" %}
+{% block title %}Covid-19{% endblock %}
+{% block content %}
+<h1>Covid-19 Publications</h1>
+	{% for post in posts %}
+		<h2>
+			<a href="{{ post.get_absolute_url }}">
+				{{ post.title }}
+			</a>
+		</h2>
+		<p class="date">
+			Published {{ post.publish }} by {{ post.study }}
+		</p>
+	{{ post.abstract|truncatewords:30|linebreaks }}
+	{% endfor %}
+	{% include "covid/pagination.html" with page=posts %}
+{% endblock %}
